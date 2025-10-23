@@ -33,13 +33,12 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .GreaterThan(0).WithMessage("Price must be greater than zero.");
     }
 }
-internal class CreateProductHandler(IDocumentSession session, ILogger<CreateProductHandler> logger)
+internal class CreateProductHandler(IDocumentSession session)
     : ICommandHandler<CreateProductCommand,CreateProductResult>
 {
 
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Creating a new product: {Name}", command.Name);
 
         var product = new Product()
         {
