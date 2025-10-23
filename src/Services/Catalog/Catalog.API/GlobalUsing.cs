@@ -8,3 +8,4 @@ global using FluentValidation;
 global using BuildingBlocks.Exceptions;
 global using Catalog.API.Exceptions;
 global using Catalog.API.Models;
+global using Marten.Schema;

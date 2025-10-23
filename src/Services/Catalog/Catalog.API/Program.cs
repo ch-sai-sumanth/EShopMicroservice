@@ -1,6 +1,7 @@
 using BuildingBlocks.Behaviours;
 using BuildingBlocks.Exceptions.Handler;
 using Carter;
+using Catalog.API.Data;
 using FluentValidation;
 using Marten;
 
@@ -18,6 +19,11 @@ builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+}
 
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
