@@ -1,5 +1,3 @@
-using Catalog.API.Models;
-
 namespace Catalog.API.Products.GetProductByCategory;
 
 public record GetProductByIdResponse(IEnumerable<Product> Products);

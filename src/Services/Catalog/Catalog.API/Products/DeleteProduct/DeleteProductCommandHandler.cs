@@ -1,8 +1,3 @@
-using BuildingBlocks.CQRS;
-using Catalog.API.Exceptions;
-using Catalog.API.Models;
-using Marten;
-
 namespace Catalog.API.Products.DeleteProduct;
 
 public record DeleteProductCommand(Guid Id) : ICommand<DeleteProductResult>;
