@@ -1,4 +1,5 @@
 using BuildingBlocks.Behaviours;
+using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using FluentValidation;
 using Marten;
@@ -18,7 +19,9 @@ builder.Services.AddMarten(options =>
 }).UseLightweightSessions();
 
 builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 var app = builder.Build();
 
 app.MapCarter();
+app.UseExceptionHandler(options => { });
 app.Run();
