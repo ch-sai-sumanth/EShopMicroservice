@@ -1,5 +1,6 @@
 using BuildingBlocks.CQRS;
 using Catalog.API.Models;
+using FluentValidation;
 using Marten;
 
 namespace Catalog.API.Products.CreateProduct;
@@ -14,11 +15,37 @@ public record CreateProductCommand(
 ) : ICommand<CreateProductResult>;
 public record CreateProductResult(Guid Id);
 
-internal class CreateProductHandler(IDocumentSession session)
+public class CreateProductHandlerValidator : AbstractValidator<CreateProductCommand>
+{
+    public CreateProductHandlerValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Product name is required.")
+            .MaximumLength(100).WithMessage("Product name must not exceed 100 characters.");
+
+        RuleFor(x => x.Category)
+            .NotEmpty().WithMessage("At least one category is required.");
+
+        RuleFor(x => x.Description)
+            .NotEmpty().WithMessage("Product description is required.")
+            .MaximumLength(1000).WithMessage("Product description must not exceed 1000 characters.");
+
+        RuleFor(x => x.ImageFile)
+            .NotEmpty().WithMessage("Image file URL is required.")
+            .MaximumLength(200).WithMessage("Image file URL must not exceed 200 characters.");
+
+        RuleFor(x => x.Price)
+            .GreaterThan(0).WithMessage("Price must be greater than zero.");
+    }
+}
+internal class CreateProductHandler(IDocumentSession session, ILogger<CreateProductHandler> logger)
     : ICommandHandler<CreateProductCommand,CreateProductResult>
 {
+
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
+        logger.LogInformation("Creating a new product: {Name}", command.Name);
+
         var product = new Product()
         {
             Name = command.Name,
