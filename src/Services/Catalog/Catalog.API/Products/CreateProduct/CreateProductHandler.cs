@@ -15,9 +15,9 @@ public record CreateProductCommand(
 ) : ICommand<CreateProductResult>;
 public record CreateProductResult(Guid Id);
 
-public class CreateProductHandlerValidator : AbstractValidator<CreateProductCommand>
+public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
 {
-    public CreateProductHandlerValidator()
+    public CreateProductCommandValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Product name is required.")
