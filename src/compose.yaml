@@ -12,6 +12,19 @@
     volumes:
       - postgres_catalog:/var/lib/postgresql/data
 
+  basketdb:
+    container_name: basketdb
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=BasketDb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql/data
+
 
   catalog.api:
     container_name: catalog.api
@@ -33,5 +46,7 @@
       - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
       - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
 
+
 volumes:
   postgres_catalog:
+  postgres_basket:

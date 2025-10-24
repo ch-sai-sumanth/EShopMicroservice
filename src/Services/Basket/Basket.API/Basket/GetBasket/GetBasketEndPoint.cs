@@ -1,0 +1,26 @@
+namespace Basket.API.Basket.GetBasket;
+
+
+// public record GetBasketRequest(string UserName);
+public record GetBasketResponse(ShoppingCart Cart);
+public class GetBasketEndPoint : ICarterModule
+{
+    public void AddRoutes(IEndpointRouteBuilder app)
+    {
+        app.MapGet("/basket/{userName}", async (string userName, ISender sender) =>
+        {
+            var query = new GetBasketQuery(userName);
+
+            var result = await sender.Send(query);
+
+            var response = result.Adapt<GetBasketResponse>();
+
+            return Results.Ok(response);
+        })
+        .WithName("GetBasket")
+        .Produces<GetBasketResponse>(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Gets the shopping basket for a user")
+        .WithDescription("Retrieves the shopping basket associated with the specified user.");
+    }
+}
