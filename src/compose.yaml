@@ -1,4 +1,6 @@
-﻿services:
+﻿version: '3.9'
+
+services:
   catalogdb:
     container_name: catalogdb
     image: postgres
@@ -11,6 +13,11 @@
       - "5432:5432"
     volumes:
       - postgres_catalog:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   basketdb:
     container_name: basketdb
@@ -24,7 +31,24 @@
       - "5433:5432"
     volumes:
       - postgres_basket:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
+  distributedcache:
+    container_name: distributedcache
+    image: redis:7
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
   catalog.api:
     container_name: catalog.api
@@ -38,7 +62,8 @@
       - ASPNETCORE_HTTPS_PORT=8081
       - ConnectionStrings__CatalogDb=Host=catalogdb;Database=CatalogDb;Username=postgres;Password=postgres
     depends_on:
-      - catalogdb
+      catalogdb:
+        condition: service_healthy
     ports:
       - "6000:8080"
       - "6060:8081"
@@ -46,6 +71,29 @@
       - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
       - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
 
+  basket.api:
+    container_name: basket.api
+    image: basket.api
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=8080
+      - ASPNETCORE_HTTPS_PORT=8081
+      - ConnectionStrings__BasketDb=Host=basketdb;Database=BasketDb;Username=postgres;Password=postgres
+      - Redis__ConnectionString=distributedcache:6379,abortConnect=false
+    depends_on:
+      basketdb:
+        condition: service_healthy
+      distributedcache:
+        condition: service_healthy
+    ports:
+      - "6001:8080"
+      - "6061:8081"
+    volumes:
+      - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
+      - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
 
 volumes:
   postgres_catalog:
