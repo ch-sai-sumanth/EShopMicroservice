@@ -1,16 +1,21 @@
-using Discount.Grpc.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 builder.Services.AddGrpc();
+
+builder.Services.AddDbContext<DiscountContext>(opts =>
+    opts.UseSqlite(builder.Configuration.GetConnectionString("DiscountDb")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
-app.MapGet("/",
-    () =>
-        "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+// ✅ Automatically apply any pending EF Core migrations on startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DiscountContext>();
+    db.Database.Migrate();
+}
+
+// Configure the HTTP request pipeline
+app.MapGrpcService<DiscountService>();
 
 app.Run();
