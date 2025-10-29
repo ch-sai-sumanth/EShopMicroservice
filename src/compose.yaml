@@ -3,7 +3,7 @@
 services:
   catalogdb:
     container_name: catalogdb
-    image: postgres
+    image: postgres:18
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_catalog:/var/lib/postgresql/data
+      - postgres_catalog:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -21,7 +21,7 @@ services:
 
   basketdb:
     container_name: basketdb
-    image: postgres
+    image: postgres:18
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -30,7 +30,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_basket:/var/lib/postgresql/data
+      - postgres_basket:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -83,6 +83,8 @@ services:
       - ASPNETCORE_HTTPS_PORT=8081
       - ConnectionStrings__BasketDb=Host=basketdb;Database=BasketDb;Username=postgres;Password=postgres
       - Redis__ConnectionString=distributedcache:6379,abortConnect=false
+      - GrpcSettings__DiscountUrl=https://discount.grpc:8081
+
     depends_on:
       basketdb:
         condition: service_healthy
@@ -108,12 +110,14 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Test123!
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx
+      - ConnectionStrings__Database=Data Source=/app/Data/discount.db
     ports:
-      - "6002:8080"
-      - "6062:8081"
+        - "6002:8080"
+        - "6062:8081"
     volumes:
-      - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
-      - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
+        - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
+        - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
+        - ./Discount.Grpc/Data:/app/Data
 
 volumes:
   postgres_catalog:
