@@ -1,5 +1,3 @@
-using Ordering.Domain.Exceptions;
-
 namespace Ordering.Domain.ValueObjects;
 
 public class ProductId
