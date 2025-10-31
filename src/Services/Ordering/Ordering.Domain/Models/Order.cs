@@ -4,7 +4,7 @@ using Ordering.Domain.ValueObjects;
 
 namespace Ordering.Domain.Models;
 
-public class Order : Aggregate<Guid>
+public class Order : Aggregate<OrderId>
 {
     private readonly List<OrderItem> _orderItems = new();
     public IReadOnlyList<OrderItem> OrderItems => _orderItems.AsReadOnly();
@@ -19,5 +19,21 @@ public class Order : Aggregate<Guid>
     {
         get => OrderItems.Sum(x => x.Price * x.Quantity);
         private set { }
+    }
+
+    public static Order Create(OrderId id,CustomerId customerId, OrderName orderName, Address shippingAddress, Payment payment, OrderStatus status)
+    {
+       var Order = new Order
+        {
+            Id = id,
+            CustomerId = customerId,
+            OrderName = orderName,
+            ShippingAddress = shippingAddress,
+            BillingAddress = shippingAddress,
+            Payment = payment,
+            Status = status
+        };
+
+        return Order;
     }
 }
