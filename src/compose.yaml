@@ -37,6 +37,16 @@ services:
       timeout: 5s
       retries: 5
 
+  orderdb:
+    container_name: orderdb
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SwN12345678
+    restart: always
+    ports:
+        - "1433:1433"
+
   distributedcache:
     container_name: distributedcache
     image: redis:7

@@ -1,0 +1,8 @@
+
+dotnet ef migrations add InitialCreate -p Services/Ordering/Ordering.Infrastructure -s Services/Ordering/Ordering.API -o Data/Migrations
+
+
+
+dotnet ef database update \
+  -p Services/Ordering/Ordering.Infrastructure \
+  -s Services/Ordering/Ordering.API
