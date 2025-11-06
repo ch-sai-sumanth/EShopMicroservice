@@ -129,8 +129,32 @@ services:
         - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
         - ./Discount.Grpc/Data:/app/Data
 
+  ordering.api:
+    container_name: ordering.api
+    image: ordering.api
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_URLS=http://+:8080   # ✅ disable HTTPS inside container
+      - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True
+      - FeatureManagement__OrderFullfilment=false
+    depends_on:
+      - orderdb
+    ports:
+      - "6003:8080"
+      - "6063:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
 volumes:
   postgres_catalog:
   postgres_basket:
+  mssql_data:
+
 
 

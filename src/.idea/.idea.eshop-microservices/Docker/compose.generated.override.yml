@@ -1,57 +1,21 @@
 # This is a generated file. Not intended for manual editing.
 version: "3.9"
 services:
-  basket.api:
+  ordering.api:
     build:
       context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
-      dockerfile: "Services/Basket/Basket.API/Dockerfile"
+      dockerfile: "Services/Ordering/Ordering.API/Dockerfile"
       target: "base"
     command: []
     entrypoint:
     - "dotnet"
-    - "/app/bin/Debug/net8.0/Basket.API.dll"
+    - "/app/bin/Debug/net8.0/Ordering.API.dll"
     environment:
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "basket.api:dev"
+    image: "ordering.api:dev"
     ports: []
     volumes:
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Services/Basket/Basket.API:/app:rw"
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Services/Ordering/Ordering.API:/app:rw"
     - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
-    - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
-    working_dir: "/app"
-  catalog.api:
-    build:
-      context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
-      dockerfile: "Services/Catalog/Catalog.API/Dockerfile"
-      target: "base"
-    command: []
-    entrypoint:
-    - "dotnet"
-    - "/app/bin/Debug/net8.0/Catalog.API.dll"
-    environment:
-      DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "catalog.api:dev"
-    ports: []
-    volumes:
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Services/Catalog/Catalog.API:/app:rw"
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
-    - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
-    working_dir: "/app"
-  discount.grpc:
-    build:
-      context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
-      dockerfile: "Discount.Grpc/Dockerfile"
-      target: "base"
-    command: []
-    entrypoint:
-    - "dotnet"
-    - "/app/bin/Debug/net8.0/Discount.Grpc.dll"
-    environment:
-      DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "discount.grpc:dev"
-    ports: []
-    volumes:
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Discount.Grpc:/app:rw"
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
-    - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
+    - "/home/saisumanth/.nuget/packages:/home/app/.nuget/packages"
     working_dir: "/app"
