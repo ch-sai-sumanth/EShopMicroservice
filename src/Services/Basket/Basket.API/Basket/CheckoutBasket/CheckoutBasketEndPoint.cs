@@ -1,6 +1,6 @@
 namespace Basket.API.Basket.CheckoutBasket;
 
-public record CheckoutBasketRequest(CheckoutBasketDto checkoutBasketDto);
+public record CheckoutBasketRequest(CheckoutBasketDto CheckoutBasketDto);
 public record CheckoutBasketResponse(bool IsSuccessful);
 public class CheckoutBasketEndPoint : ICarterModule
 {
