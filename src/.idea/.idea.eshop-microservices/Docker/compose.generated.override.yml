@@ -37,6 +37,24 @@ services:
     - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
     - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
     working_dir: "/app"
+  discount.grpc:
+    build:
+      context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
+      dockerfile: "Discount.Grpc/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Discount.Grpc.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "discount.grpc:dev"
+    ports: []
+    volumes:
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Discount.Grpc:/app:rw"
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
+    - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
+    working_dir: "/app"
   ordering.api:
     build:
       context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
