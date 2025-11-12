@@ -73,3 +73,21 @@ services:
     - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
     - "/home/saisumanth/.nuget/packages:/home/app/.nuget/packages"
     working_dir: "/app"
+  yarpapigateway:
+    build:
+      context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
+      dockerfile: "ApiGateways/YarpApiGateway/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/YarpApiGateway.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "yarpapigateway:dev"
+    ports: []
+    volumes:
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/ApiGateways/YarpApiGateway:/app:rw"
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
+    - "/home/saisumanth/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"
