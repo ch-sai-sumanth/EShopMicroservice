@@ -37,24 +37,6 @@ services:
     - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
     - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
     working_dir: "/app"
-  discount.grpc:
-    build:
-      context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
-      dockerfile: "Discount.Grpc/Dockerfile"
-      target: "base"
-    command: []
-    entrypoint:
-    - "dotnet"
-    - "/app/bin/Debug/net8.0/Discount.Grpc.dll"
-    environment:
-      DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "discount.grpc:dev"
-    ports: []
-    volumes:
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Discount.Grpc:/app:rw"
-    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
-    - "/home/saisumanth/.nuget/packages:/root/.nuget/packages"
-    working_dir: "/app"
   ordering.api:
     build:
       context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
@@ -70,6 +52,25 @@ services:
     ports: []
     volumes:
     - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/Services/Ordering/Ordering.API:/app:rw"
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
+    - "/home/saisumanth/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"
+  shopping.web:
+    build:
+      context: "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src"
+      dockerfile: "WebApps/Shopping.Web/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Shopping.Web.dll"
+    environment:
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/Shopping.Web.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "shopping.web:dev"
+    ports: []
+    volumes:
+    - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src/WebApps/Shopping.Web:/app:rw"
     - "/home/saisumanth/Documents/newfolder/Dev Learning/BackendLearning/Projects/EShopMicroservice/src:/src:rw"
     - "/home/saisumanth/.nuget/packages:/home/app/.nuget/packages"
     working_dir: "/app"
