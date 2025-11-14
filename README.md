@@ -1,4 +1,7 @@
-# 🧩 EShop Microservices — .NET 8 Clean Architecture Implementation
+# 🧩 EShop Microservices
+
+<img width="1598" height="812" alt="315259850-efe5e688-67f2-4ddd-af37-d9d3658aede4" src="https://github.com/user-attachments/assets/2c863954-fe58-40f2-abdb-e4d1c27c6c1c" />
+
 
 ### 🛒 A Cloud-Ready Microservices-based E-Commerce Application built with ASP.NET Core, Docker, and modern .NET 8 tools
 
